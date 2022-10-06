@@ -13,6 +13,22 @@ Represent the `unstructured` data that is used to supplement a Resource.
 For example, a `Customer Survey` may have free-form questions (fields) like `Did-you enjoy your visit`? and those three-form fields should be associated to the customer who submitted it.
 A `Customer Survey` would be a `Form` that references the `Customer` resource.
 
+Structure of a Form is written as a JSON structure : 
+
+``` 
+components: [
+  {
+    type: 'textfield',
+    key: 'firstName',
+    label: 'First Name',
+    placeholder: 'Enter your first name.',
+    input: true,
+    tooltip: 'Enter your <strong>First Name</strong>',
+    description: 'Enter your <strong>First Name</strong>'
+  }
+]
+```
+
 ## User Management Access
 
 Roles and Permissions allow users to be granted certain permissions to perform certain actions and have access to forms and submissions within a project.
