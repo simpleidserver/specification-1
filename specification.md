@@ -59,6 +59,37 @@ The present documents describes the Open Human Task specification, which is inte
 
 ## Core concepts
 
+### Task definition
+
+A Human Task definition contains the definition of the deployed task model.
+The template contains properties, such as the task name and priority and aggregates artifacts, such as escalation templates, custom properties, and people query templates.
+
+### Task instance
+
+A Human Task instance is a runtime occurrence of a Task definition.
+
+### Business Process Management (BPM)
+
+Structured approach to improving the processes organizations use to get work done, serve their customers and generate business value.
+There are different modeling languages which can be used to model a business process for examples :
+
+* Business Process Modeling Notation (BPMN) : Complete and graphical notation for documenting well-defined business processes.
+* ServerlessWorkflow: Vendor-neutral and delcaratif workflow language, targeting serverless computing technology domain.
+
+Both notations support the concept of `Human Task`.
+
+### Case Management Model and Notation (CMMN)
+
+CMMN is a graphical notation used for capturing work methods that are based on the handling of `cases` requiring various activities that may be performed in an unpredictable order in response to evolving situations.
+This notation also supports the concept of `Human Task`.
+
+### Basket
+
+TODO
+
+### Use Management Access
+
+
 ### Generic Human Roles
 
 Generic human roles define what a person or a group of people resulting from a people query can do with tasks and notifications. The following generic human roles are taken into account in this specification:
