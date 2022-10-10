@@ -4,7 +4,7 @@
 
 ### Form
 
-Contains visual elements of a form.
+Contains visual elements.
 
 Structure of a Form is written as a JSON structure :
 
@@ -42,7 +42,8 @@ Unique Identifier of a task. Used by BPMN or CMMN process to instantiate a task.
 
 ### Task instance
 
-Instance of a Task. It can be assigned to one user and can have one of the following state :
+One task definition can have one or more running instances.
+An instance can be assigned to one user and can have one of the following state :
 * Created
 * Completed
 * Canceled
@@ -51,7 +52,7 @@ For more information, please refer to the graphql documentation : https://docs.c
 
 ## User Management Access
 
-Responbility of the CMMN or BPMN workflow to assign the permissions.
-The property `candidateGroups` specifies the groups of users that the task can be assigned to.
+Every task instance can be assigned to either a group of people, or a specific individual.
+An individual can `claim` a task, indicating that they are picking the task from the pool.
 
-https://docs.camunda.io/docs/components/modeler/bpmn/user-tasks/
+In a Business Process (BPMN or CMMN), Human Tasks should be assigned to groups of people instead of specific individuals.

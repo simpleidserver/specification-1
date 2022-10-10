@@ -1,6 +1,6 @@
 # Form.IO
 
-## Core Concepts
+## Core concepts
 
 ### Resources
 
