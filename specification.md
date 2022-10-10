@@ -34,17 +34,20 @@
     - [Claim Filter Definitions](#claim-filter-definitions)
     - [Logical People Group Definitions](#logical-people-group-definitions)
     - [Form Definitions](#form-definitions)
+    - [Data Model Definitions](#data-model-definitions)
     - [View Definitions](#view-definitions)
     - [Subtask Definitions](#subtask-definitions)
     - [Notification Definitions](#notification-definitions)
     - [Reassignment](#reassignment-definitions)
     - [Deadline Definitions](#deadline-definitions)
     - [Completion Behavior Definitions](#completion-behavior-definitions)
+    - [Outcome Definitions](#outcome-definitions)
     - [Escalation Definitions](#escalation-definitions)
     - [Escalation Action Definitions](#escalation-action-definitions)
     - [Human Tasks](#human-tasks)
     - [People Assignments](#people-assignments)
     - [User References](#user-references)
+    - [Task Definition References](#task-definition-references)
     - [Forms](#forms)
     - [Views](#views)
     - [Attachments](#attachments)
@@ -477,17 +480,18 @@ Defines a human task and configures its behaviors.
 | routingMode | `enum` | `yes` | `no` | The task's routing mode.<br>Possible values are: `none`, `sequential` and `parallel`.<br>If sets to `none`, the task's does not perform any routing.<br>If set to `sequential`, a new subtask will be created and assigned to the first resolved [potential owner](#potential-owners). The runtime waits for the subtask's completion, then assigns a new one to the next [potential owner](#potential-owners), and repeats those steps until all [potential owner](#potential-owners) have performed the task.<br>If set to `parallel`, a subtask is created for each and every [potential owner](#potential-owners). The resulting subtasks are performed by their [actual owner](#actual-owner) in parallel.<br>*Defaults to `none`.* |
 | expressionLanguage | `string` | `yes` | `no` | The language to use to evaluate [runtime expression](#runtime-expression)s.<br>*Defaults to [`jq`](https://stedolan.github.io/jq/).* |
 | key | `string` | `no` | `yes` | A literal or a [runtime expression](#runtime-expression) used to generate the keys of instanciated human tasks. It could be used, in the case of a purchase review, to set the reviewed purchase order's id as the human task's key   |
-| title | `object` | `no` | `yes` | The mappings of localized titles to their two-letter **ISO 639-1** language names. Titles are used as human task localized display name. |
-| subject | `object` | `no` | `yes` | The mappings of localized subjects to their two-letter **ISO 639-1** language names. |
-| description | `object` | `no` | `yes` | The mappings of localized descriptions to their two-letter **ISO 639-1** language names. |
+| title | `string`<br>`object` | `no` | `yes` | The task's localized titles. Titles are used as human task localized display name.<br>If a `string`, the culture-invariant title's value.<br>If an `object`, the mappings of localized titles to their two-letter ISO 639-1 language names.<br>*Supports [runtime expression](#runtime-expressions).* |
+| subject | `string`<br>`object` | `no` | `yes` | The task's localized subjects.<br>If a `string`, the culture-invariant subject's value.<br>If an `object`, the mappings of localized subjects to their two-letter ISO 639-1 language names.<br>*Supports [runtime expression](#runtime-expressions).* |
+| description | `string`<br>`object` | `no` | `yes` | The task's localized descriptions.<br>If a `string`, the culture-invariant description's value.<br>If an `object`, the mappings of localized descriptions to their two-letter ISO 639-1 language names.<br>*Supports [runtime expression](#runtime-expressions).* |
 | peopleAssignments | [`peopleAssignmentsDefinition`](#people-assignments-definitions) | `no` | `no` | The configuration of the task's people assignments to generic roles. |
-| inputDataSchema | [`jsonSchema`](https://json-schema.org/) | `no` | `no` | A [`JSON Schema`](https://json-schema.org/) use to define and validate inputs of the human task definition's instances. | 
-| outputDataSchema | [`jsonSchema`](https://json-schema.org/) | `no` | `no` | A [`JSON Schema`](https://json-schema.org/) use to define and validate outputs of the human task definition's instances. | 
+| inputData | [`dataModelDefinition`](#data-model-definitions) | `no` | `no` | A [`data model definition`](#data-model-definitions) use to define, validate and initialize the input of the human task definition's instances. | 
+| outputData | [`dataModelDefinition`](#data-model-definitions) | `no` | `no` | A [`data model definition`](#data-model-definitions) use to define, validate and initialize the output of the human task definition's instances. | 
 | form | `string`<br>[`formDefinition`](#form-definitions) | `no` | `no` | Configures the task's form.<br>*If a `string`, an uri referencing the external [form definition](#form-definition).*<br>*If an `object`, the inline configuration of the human task's [form definition](#form-definition).* |
 | subtasks | [`subTaskDefinition[]`](#subtask-definitions) | `no` | `no` | An array containing the task's children task. |
 | subtaskExecutionMode | `enum` | `depends` | `no` | Defines the way subtasks should be executed.<br>Possible values are: `sequential` and `parallel`.<br>If set to `sequential`, [subtasks](#subtask-definitions) are executed in lexical order.<br>If set to `parallel`, [subtasks](#subtask-definitions) are executed in parallel.<br>*Required if at least one [subtask](#subtask-definitions) has been defined.*<br>*Defaults to `sequential`.* |
 | deadlines | [`deadlineDefinition[]`](#deadline-definitions) | `no` | `no` | An array containing the [`deadlines`](#deadline-definitions) of the human task's instances. |
-| completionBehaviors | [`completionBehaviorDefinition[]`](#completion-behavior-definitions) | `no` | `no` | An array that contains the task's [completion behaviors](#completion-behavior-definitions).<br>*Required if `routingMode` has not been set to `none`, or if the task defines `subtasks`. Otherwise optional.*
+| completionBehaviors | [`completionBehaviorDefinition[]`](#completion-behavior-definitions) | `no` | `no` | An array that contains the task's [completion behaviors](#completion-behavior-definitions).<br>*Required if `routingMode` has not been set to `none`, or if the task defines `subtasks`. Otherwise optional.* |
+| outcomes | [`outcomeDefinition[]`](#outcome-definitions) | `no` | `no` | An array containing the task's possible [outcomes](#outcome-definitions). |
 | annotations | `array`<br>`object` | `depends` | `no` | An array of string-based key/value pairs containing helpful terms used to describe the human task intended purpose, subject areas, or other important qualities.
 | metadata | `object` | `no` | `no` | An object used to provide additional unstructured information about the human task definition. May be used by implementations to define additional functionality. | 
 
@@ -510,8 +514,10 @@ subject:
 description:
   fr: Examiner une requête de crédit à tempérament
   en: Review an installment credit request 
-inputDataSchema: https://foo-bank.com/schemas/humantasks/input.json
-outputDataSchema: https://foo-bank.com/schemas/humantasks/output.json
+inputData:
+  schema: https://foo-bank.com/schemas/humantasks/input.json
+outputData:
+  schema: https://foo-bank.com/schemas/humantasks/output.json
 form:
   data:
     schema: https://foo-bank.com/schemas/humantasks/form.data.json
@@ -533,7 +539,11 @@ deadlines:
 outcomes:
   - name: approved
     condition: '${ .output.approved and .output.approverId != null }'
+    value: Approved
   - name: rejected
+    value: 
+      en: Approved
+      fr: Approuvé
 annotations:
   tags: loan approval
 metadata:
@@ -557,6 +567,7 @@ Represents the definition used to configure people assignments for instance of t
 | [businessAdministrators](#businessAdministrators) | [`peopleReferenceDefinition[]`](#people-reference-definitions) | `no` | `no` | The [business administrators](#business-administrators) of the task. |
 | [notificationRecipents](#notification-recipents) | [`peopleReferenceDefinition[]`](#people-reference-definitions) | `no` | `no` | The [recipients of all notifications](#notification-recipents) produced by the task. |
 | groups | [`logicalPeopleGroupDefinition[]`](#logical-people-group-definitions) | `no` | `no` | An array containing the [`logical people groups`](#logical-people-group-definition) defined for the task's scope. |
+
 #### Examples
 
 ```yaml
@@ -614,7 +625,7 @@ Represents an object used to reference multiple users based on given parameters.
 |------|:----:|:--------:|:---------------------:|-------------|
 | withClaims | [`claimFilterDefinition[]`](#claim-filter-definitions) | `depends` | `no` | The claims to filter by the users to reference.<br>Required if `inGroup` and `inGenericRole` have not been set, otherwise ignored. |
 | inGroup | `string` | `depends` | `yes` | The logical group that defines the users to reference.<br>Required if `withClaims` and `inGenericRole` have not been set, otherwise ignored. |
-| [inGenericRole](#generic-task-roles) | `enum` | `depends` | `no` | The [generic role](#generic-task-roles) that defines the users to reference.<br>Required if `withClaims` and `inGroup` have not been set, otherwise ignored.<br>*Assignments of users to generic roles are delcared in the [human task definition's `peopleAssignments`](#human-task-definitions) property.*  |
+| [inGenericRole](#generic-human-roles) | `enum` | `depends` | `no` | The [generic role](#generic-human-roles) that defines the users to reference.<br>Required if `withClaims` and `inGroup` have not been set, otherwise ignored.<br>*Assignments of users to generic roles are delcared in the [human task definition's `peopleAssignments`](#human-task-definitions) property.*  |
 
 #### Examples
 
@@ -727,7 +738,7 @@ Represents the definition of an human task form, which is used to collect data f
 
 | Name | Type | Required | Runtime<br>Expression | Description |
 |------|:----:|:--------:|:---------------------:|-------------|
-| data | [`formDataDefinition`](#form-data-definitions) | `no` | `no` | Configures the form's data. |
+| data | [`dataModelDefinition`](#data-model-definitions) | `no` | `no` | Configures the form's data. |
 | views | [`viewDefinition[]`](#view-definitions) | `yes` | `no` | Configures the form's views.<br>*Must contain at least one [`view definition`](#view-definitions).* |
 
 #### Examples
@@ -738,8 +749,7 @@ Represents the definition of an human task form, which is used to collect data f
 ...
 form:
   data:
-    filter:
-      input: '${ .input.client }'
+    state: '${ .input.client }'
     schema: 
       type: object
       properties:
@@ -782,6 +792,43 @@ form:
         }]
       }
 ...
+```
+
+### Data Model Definitions
+
+#### Description
+
+Defines, describes and validates a data model.
+
+#### Properties
+
+| Name | Type | Required | Runtime<br>Expression | Description |
+|------|:----:|:--------:|:---------------------:|-------------|
+| schema | [`jsonSchema`](https://json-schema.org/) | `no` | `no` | The [`JsonSchema`](https://json-schema.org/) used to validate the model's data. |
+| state | `string`<br>`object` | `no` | `no` | The model's initial state.<br>If a `string` , is a runtime expression used to build the model's initial state based on the human task's data.<br>If an `object`, represents the initial state of the model to create.  [Runtime expressions](#runtime-expressions) can be used in any and all properties, at whichever depth.<br>If not set, the initial state is empty. |
+
+#### Examples
+
+```yaml
+data:
+  state: '${ .input.client }'
+  schema: 
+    type: object
+    properties:
+      client:
+        type: object
+        properties:
+          firstName:
+            type: string
+          lastName:
+            type: string
+          email:
+            type: string
+            format: email
+        required:
+          - firstName
+          - lastName
+          - email
 ```
 
 ### View Definitions
@@ -867,7 +914,7 @@ Represents the object that defines a configures the sub tasks of a [human task](
 | Name | Type | Required | Runtime<br>Expression | Description |
 |------|:----:|:--------:|:---------------------:|-------------|
 | name | `string` | `yes` | `no` | The subtask's name.<br>*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` character.* |
-| taskRef | `string` | `yes` | `yes` | The globally unique identifier of the [task definition](#human-task-definitions) to instanciate |
+| task | `string`<br>[`taskDefinitionReference`](#task-definition-references) | `yes` | `yes` | References the [human task definition](#human-task-definitions) to instanciate.<br>*If a `string`, the globally unique identifier of the [task definition](#human-task-definitions) to instanciate.*<br>If an `object`, the inline [task definition reference](#task-definition-references). |
 | input | `string`<br>`object` | `no` | `yes` | The data to pass as the [subtask](#human-tasks)'s input.<br>If a `string` , is a runtime expression used to build the subtask's input data based on the human task's data.<br>If an `object`, represents the input data of the subtask to create. runtime expressions can be used in any and all properties, at whichever depth.<br>If not set, no input data is supplied to the [subtask](#human-task-definitions). |
 | peopleAssignments | [peopleAssignments](#people-assignments-definitions) | `no` | `yes` | Configures the people to assign the [subtask](#human-task) to.<br>*Overrides the [assignments](#people-assignments-definitions) configured by the [subtask's definition](#human-task-definitions).* |
 
@@ -898,7 +945,7 @@ Represents the definition of a notification, which is use to communicate the sta
 | name | `string` | `yes` | `no` | The notification's name.<br>*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` character.* |
 | views | [`viewDefinition[]`](#view-definitions) | `yes` | `yes` | Configures the notification's views.<br>*Must contain at least one [`view definition`](#view-definitions).* |
 | input | `string`<br>`object` | `no` | `yes` | If a `string`, is a [runtime expression](#runtime-expression) used to build the notification's input data based on the human task's data.<br>If an `object`, represents the input data of the notification to produce. [runtime expression](#runtime-expression)s can be used in any and all properties, at whichever depth. 
-| recipients | [`peopleAssignmentDefinition[]`](#people-assignment-definition) | `yes` | `no` | An array that contains the notification's recipients.<br>*Must contain at least one [recipient](#people-assignment-definition).*
+| recipients | [`peopleAssignmentDefinition[]`](#people-assignment-definition) | `no` | `no` | An array that contains the notification's recipients.<br>*If set, must contain at least one [recipient](#people-assignment-definition).*
 
 #### Examples
 
@@ -961,8 +1008,8 @@ Represents the definition of a deadline to reach a given human task status miles
 |------|:----:|:--------:|:---------------------:|-------------|
 | name | `string` | `yes` | `no` | The name of the deadline. <br />*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` character.* |
 | type | `enum` | `yes` | `no` | The deadline type.<br>*Possibles values are: `start` and `completion`* |
-| until | `string` | `depends` | `no` | The **ISO 8601** date and time after which the deadline triggers the defined escalation.<br>*Is required if `duration` has not been set.* |
-| duration | `dateTime` | `depends` | `no` | The **ISO 8601** duration after which the deadline triggers the defined escalation.<br>*Is required if `until` has not been set.* |
+| elapsesAt | `dateTimeOffset` | `depends` | `no` | The **ISO 8601** date and time at which the deadline elaspes and potentially triggers escalations.<br>*Required if `duration` has not been set.* |
+| elapsesAfter | `string` | `depends` | `no` | The **ISO 8601** duration after which the deadline elapses and potentially triggers escalations.<br>*Required if `until` has not been set.* |
 | escalations | [`escalationDefinition[]`](#escalation-definition) | `yes` | `no` | An array containing the escalations that may be performed when the deadline has been reached.<br>Must contain at least one escalation definition. |
 
 #### Examples
@@ -1078,6 +1125,39 @@ completionBehaviors:
       feedback: 
         seen: '${ $CONTEXT.form.data.hasSeenMovie }' 
         comment: '${ $CONTEXT.form.data.comment }'
+```
+
+### Outcome Definitions
+
+#### Description
+
+Defines the outcome of a task.
+
+An outcome can be the task's `default` (fallback), by leaving the `condition` property unset or setting it to `null`. 
+
+A `default` outcome will <u>always</u> apply if its the only declared outcome, or if no conditional outcome matched the context.
+
+#### Properties
+
+| Name | Type | Required | Runtime<br>Expression | Description |
+|------|:----:|:--------:|:---------------------:|-------------|
+| name | `string` | `yes` | `no` | The name of the outcome. <br>*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` character.* |
+| condition | `string` | `no` | `yes` | A [runtime expression](#runtime-expression) used to determine whether or not the outcome applies.<br>*If not set, makes the outcome the task's default.*<br>*There can be at most one default outcome.* |
+| value | `string`<br>`object` | `yes` | `yes` | The outcome's localized values.<br>If a `string`, the culture-invariant outcome's value.<br>If an `object`, the mappings of localized values to their two-letter ISO 639-1 language names.*Must declare at least one language/value pair.* |
+
+#### Examples
+
+```yaml
+...
+outcomes:
+  - name: approved
+    condition: ${ $CONTEXT.form.data.approved }
+    value:
+      en: Document Approved 
+      pt: Documento Approvado
+  - name: rejected
+    value: Rejected
+...
 ```
 
 ### Human Tasks
@@ -1218,6 +1298,30 @@ Represents a reference to an user.
 ...
 id: 1234567890
 name: John Smith
+...
+```
+
+### Task Definition References
+
+#### Description
+
+Represents a reference to a task definition.
+
+#### Properties
+
+| Name | Type | Required | Runtime<br>Expression | Description |
+|------|:----:|:--------:|:---------------------:|-------------|
+| name | `string` | `yes` | `yes` | The name of the referenced task definition.<br>*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` character.*<br>*Supports [runtime expressions](#runtime-expressions).* |
+| namespace | `string` | `yes` | `yes` | The namespace the referenced task definition belongs to.<br>*Must be lowercase and only contain alphanumeric characters, with the exceptions of the `-` and `.` characters.*<br>*Supports [runtime expressions](#runtime-expressions).* |
+| version | `string` | `no` | `yes` | The [semantic version](https://semver.org/) of the human task definition.<br>*Defaults to `latest`.<br>*Supports [runtime expressions](#runtime-expressions).* |
+
+#### Examples
+
+```yaml
+...
+name: review-application
+namespace: openbank.human-resources.jobs
+version: 1.7.9
 ...
 ```
 

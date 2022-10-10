@@ -3,6 +3,7 @@
   <br>
   <img src="assets/images/oht-type.png" height="175" alt="Open Human Task Logotyping"/>
 </p>
+<hr>
 
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-green.svg?style=flat)](https://github.com/openhumantask/specification/issues)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/openhumantask/specification/blob/master/LICENSE)
@@ -38,9 +39,9 @@ The project is composed of:
 | Latest release | Latest release | Branch | Working branch |
 |----------------|----------------|--------|----------------|
 | **Core** |
-| [Human Task Specification](specification.md) | [v0.1.0]() | [0.1.x]() | [main]() |
+| [Human Task Specification](specification.md) | [v0.1.0]() | [0.1.x]() | [main](https://github.com/openhumantask/specification) |
 | **SDKs** |
-| [.NET SDK]() | [v0.1.0]() | [0.1.x]() | [main]() |
+| [.NET SDK](https://github.com/openhumantask/sdk-net) | [v0.1.0]() | [0.1.x]() | [main](https://github.com/openhumantask/sdk-net) |
 
 ## Community
 
