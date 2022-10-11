@@ -62,7 +62,7 @@ The present documents describes the Open Human Task specification, which is inte
 ### Task definition
 
 A Human Task definition contains the definition of the deployed task model.
-The template contains properties, such as the task name and priority and aggregates artifacts, such as escalation templates, custom properties, and people query templates.
+The template contains properties, such as the task name and priority, and aggregates artifacts, such as escalation templates, custom properties, and people query templates.
 
 ### Task instance
 
@@ -73,8 +73,8 @@ A Human Task instance is a runtime occurrence of a Task definition.
 Structured approach to improving the processes organizations use to get work done, serve their customers and generate business value.
 There are different modeling languages which can be used to model a business process for examples :
 
-* Business Process Modeling Notation (BPMN) : Complete and graphical notation for documenting well-defined business processes.
-* ServerlessWorkflow: Vendor-neutral and delcaratif workflow language, targeting serverless computing technology domain.
+* **Business Process Modeling Notation (BPMN)** : Complete and graphical notation for documenting well-defined business processes.
+* **ServerlessWorkflow**: Vendor-neutral and delcaratif workflow language, targeting serverless computing technology domain.
 
 Both notations support the concept of `Human Task`.
 
@@ -83,12 +83,120 @@ Both notations support the concept of `Human Task`.
 CMMN is a graphical notation used for capturing work methods that are based on the handling of `cases` requiring various activities that may be performed in an unpredictable order in response to evolving situations.
 This notation also supports the concept of `Human Task`.
 
-### Basket
+### Work basket
 
-TODO
+Shared pool of `task instances` from which users who belong to the `Work group` can select work.
 
-### Use Management Access
+### Work list
 
+Automatically created for each user, is a prioritized list of `Task instance` for that user.
+
+### Work group
+
+A work group identifies a cross-functional team that contains a manager, a set of users and a `Work basket`.
+
+## Overall language structure
+
+<table>
+	<thead>
+		<tr>
+			<th>JSON</th>
+			<th>YAML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td valign="top">
+```json
+{
+"id": "userAccountProvisioning",
+"version": "1.0.0",
+"specVersion": "0.1",
+"name": "Provision one user account",
+"start": "createActiveDirectoryAccount",
+"humanTasks":[{
+	"name": "createActiveDirectoryAccount"
+}],
+"notifications": [{
+	"name": "remindUpdatePassword"
+}],
+"logicalPeopleGroups": [{
+	"name": "activeDirectoryTeam"
+}]
+}
+```
+			</td>
+			<td>
+			
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+## Elements
+
+### Human tasks
+
+Definition of a Human task :
+
+<table>
+	<thead>
+		<tr>
+			<th>JSON</th>
+			<th>YAML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td valign="top">
+			</td>
+			<td valign="top">			
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Notifications
+
+Definition of a notification :
+
+<table>
+	<thead>
+		<tr>
+			<th>JSON</th>
+			<th>YAML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td valign="top">
+			</td>
+			<td valign="top">			
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+### Logical People group
+
+Definition of a logical people group :
+
+<table>
+	<thead>
+		<tr>
+			<th>JSON</th>
+			<th>YAML</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td valign="top">
+			</td>
+			<td valign="top">			
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 ### Generic Human Roles
 
