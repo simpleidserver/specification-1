@@ -98,15 +98,13 @@ A work group identifies a cross-functional team that contains a manager, a set o
 ## Overall language structure
 
 <table>
-	<thead>
-		<tr>
-			<th>JSON</th>
-			<th>YAML</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td valign="top">
+<tr>
+    <th>JSON</th>
+    <th>YAML</th>
+</tr>
+<tr>
+<td valign="top">
+
 ```json
 {
 "id": "userAccountProvisioning",
@@ -114,6 +112,12 @@ A work group identifies a cross-functional team that contains a manager, a set o
 "specVersion": "0.1",
 "name": "Provision one user account",
 "start": "createActiveDirectoryAccount",
+"renderingMethods": [{
+	"name": "createActiveDirectoryAccount"
+}],
+"completionBehaviors": [{
+	"name": "completeAfter7Days"
+}],
 "humanTasks":[{
 	"name": "createActiveDirectoryAccount"
 }],
@@ -125,12 +129,11 @@ A work group identifies a cross-functional team that contains a manager, a set o
 }]
 }
 ```
-			</td>
-			<td>
-			
-			</td>
-		</tr>
-	</tbody>
+
+</td>
+<td valign="top">			
+</td>
+</tr>
 </table>
 
 ## Elements
@@ -140,63 +143,103 @@ A work group identifies a cross-functional team that contains a manager, a set o
 Definition of a Human task :
 
 <table>
-	<thead>
-		<tr>
-			<th>JSON</th>
-			<th>YAML</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td valign="top">
-			</td>
-			<td valign="top">			
-			</td>
-		</tr>
-	</tbody>
+<tr>
+    <th>JSON</th>
+    <th>YAML</th>
+</tr>
+<tr>
+<td valign="top">
+</td>
+<td valign="top">			
+</td>
+</tr>
 </table>
+
+#### Properties
+
+| Parameter 			| Description 																																								| Type 							| Required 	|
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- | --------- |
+| name 					| Specify the name of the task 																																				| string 						| yes 		|
+| rendering				| Reference to the rendering method																																			| string						| yes		|
+| actions 				| Actions executed when the form is submitted 																																| Action 						| no 		|
+| priority 				| Priority of the task. A value between 0 and 10 can be specified where 0 is the highest priority and 10 is the lowest. If not present, the priority is considered as 5.	| string or Expression language | no 		|
+| peopleAssignments 	| Logical group of people assigned to different generic human roles 																										| People assignment 			| no 		|
+| completionBehavior 	| Specify completion conditions of the task.																																| string						| no		|
+| delegation			| Specify constraints concerning delegation of the task																														| Delegation					| no		|
+| presentationElements	| Specify different information used to display the task in a `Worker basket` or `Task list`, such as name, subject and description											| Presentation element			| no		|
+| deadline				| Specify the different deadline																																			| Deadline						| no		|
+| inputParameter		| Apply transformation rules on the input parameters																														| Transformation rules			| no		|
+| outputParameters		| Apply transformation rules on the output parameters																														| Transformation rules			| no		|
+
+(il y a des éléments à afficher)
+
+
+### Rendering method
+
+Definition of a rendering method :
+
+<table>
+<tr>
+    <th>JSON</th>
+    <th>YAML</th>
+</tr>
+<tr>
+<td valign="top">
+</td>
+<td valign="top">			
+</td>
+</tr>
+</table>
+
+#### Properties
+
+| Parameter | Description | Type | Required |
+| --------- | 
+| name      | Specify the name of the rendering method                                                                     	| string       | false | 
+| lib       | Library used for the rendering method. Possible values : default or camunda. The default value is `default`. 	| string       | false |
+| content   | Contains the visual elements                                                     								| unstructured | true  |
 
 ### Notifications
 
 Definition of a notification :
 
 <table>
-	<thead>
-		<tr>
-			<th>JSON</th>
-			<th>YAML</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td valign="top">
-			</td>
-			<td valign="top">			
-			</td>
-		</tr>
-	</tbody>
+<tr>
+    <th>JSON</th>
+    <th>YAML</th>
+</tr>
+<tr>
+<td valign="top">
+</td>
+<td valign="top">			
+</td>
+</tr>
 </table>
+
+#### Properties
+
+TODO
 
 ### Logical People group
 
 Definition of a logical people group :
 
 <table>
-	<thead>
-		<tr>
-			<th>JSON</th>
-			<th>YAML</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td valign="top">
-			</td>
-			<td valign="top">			
-			</td>
-		</tr>
-	</tbody>
+<tr>
+    <th>JSON</th>
+    <th>YAML</th>
+</tr>
+<tr>
+<td valign="top">
+</td>
+<td valign="top">			
+</td>
+</tr>
 </table>
+
+#### Properties
+
+TODO
 
 ### Generic Human Roles
 
